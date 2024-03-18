@@ -101,13 +101,12 @@ export default function TaskDetailCard() {
                 <TaskCard key={subTask.id} task={subTask} />
               ))
               :
-              <p>You don't have any note</p>
+              <p>You don't have any subtask</p>
             }
           </CardContent>
         </Box>
         :
         <p>Data not found</p>
-
       }
     </Card>
   );

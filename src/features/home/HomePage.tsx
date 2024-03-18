@@ -3,6 +3,7 @@ import { Box, Button, Grid, Stack } from "@mui/material";
 import AppTitle from "../../app/common/components/AppTitle";
 import CommonButton from "../../app/common/components/CommonButton";
 import TaskList from "../task/TaskList";
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 
 const HomePage = () => {
   const { deleteAllTaskHandler } = useEventListner();
@@ -15,10 +16,11 @@ const HomePage = () => {
           <Stack
             direction='row'
             justifyContent="space-between"
-            alignItems="flex-start"
+            alignItems="center"
             spacing={1}>
             <Box component='div'>
-              <img src='../images/logo.svg' />
+              {/* <img src='../images/logo.svg' /> */}
+              <AccountBalanceIcon />
             </Box>
             <Box sx={{ minWidth: 64 }}>
               <AppTitle title="ToDo App" />

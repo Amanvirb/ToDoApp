@@ -5,9 +5,11 @@ import { ITask } from '../../app/models/todo/task';
 import TaskCard from './cards/TaskCard';
 
 const TaskList = () => {
+
     const { tasksList } = useEventListner();
 
     const mainTasks = tasksList.filter(x => !x.parentId);
+    
     return (
         <Box component='div' >
             {mainTasks.length > 0 ?
