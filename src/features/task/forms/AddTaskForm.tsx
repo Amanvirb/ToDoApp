@@ -1,11 +1,9 @@
 import { LoadingButton } from '@mui/lab';
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { FieldValues, Resolver, useForm } from 'react-hook-form';
 import { commonStyles } from '../../../app/common/styles/commonStyles';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { router } from '../../../app/router/Routes';
 import useEventListner from '../../../app/hooks/useEventListner';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from 'react';
 import { selectOptions } from '../../../app/common/options/commonOptions';
@@ -60,7 +58,8 @@ const AddTaskForm = () => {
 
     return (
         <Box component={"form"}>
-            <ArrowBackIcon onClick={() => router.navigate('/')} />
+            <Link to='/' > <Typography variant='h6'>List of all tasks</Typography></Link>
+            {/* <ArrowBackIcon onClick={() => router.navigate('/')} /> */}
             <AppTitle title="Add New Task" />
             <Stack
                 direction="column"

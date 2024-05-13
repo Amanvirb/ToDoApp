@@ -12,7 +12,6 @@ const HomePage = () => {
     <Box component='div'>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-
           <Stack
             direction='row'
             justifyContent="space-between"
@@ -27,7 +26,7 @@ const HomePage = () => {
             </Box>
           </Stack>
 
-          <Box sx={{ textAlign: 'center' }}>
+          <Box sx={{ textAlign: 'center', p:4 }}>
             <CommonButton btnText="Add Task" route="/addtask" />
             <Button
               color="warning"

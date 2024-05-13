@@ -47,7 +47,9 @@ export default function TaskCard({ task }: TaskProps) {
       <CardActions>
 
         <Button size="small" onClick={() => deleteHandler(task.id)} >Delete</Button>
-        <Button size="small" onClick={() => router.navigate(`/taskdetail/${task.id}`)} >View</Button>
+        {!task.parentId &&
+          <Button size="small" onClick={() => router.navigate(`/taskdetail/${task.id}`)} >View</Button>
+        }
         {!task.parentId &&
           <Button size="small" onClick={() => router.navigate(`/addsubtask/${task.id}`)} >Add SubTask</Button>
         }
