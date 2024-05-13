@@ -30,7 +30,8 @@ export const taskSlice = createSlice({
   reducers: {
     initTasks: (state) => {
       if (!state.tasksLoaded) {
-        //Check if LS have task list and if yes set all the tasks and taskIds to the state
+        //Check if Local Storage have task list and if yes set all the tasks and taskIds to the state
+        //In real app Task List will be fetched from API
         const taskIds: string[] = JSON.parse(localStorage.getItem("taskIds")!);
         if (taskIds) {
           const taskList: ITask[] = [];
@@ -47,7 +48,7 @@ export const taskSlice = createSlice({
       }
     },
     setTask: (state, action) => {
-      //Check if parent taskId is exist, in case of sub task
+      //Check if parent taskId is exist, in case of new task will be the subtask of parent task
       if (
         action.payload.parentId &&
         (!state.taskIds.includes(action.payload.parentId) ||
@@ -56,7 +57,7 @@ export const taskSlice = createSlice({
         toast.success("No Parent Task found");
         return;
       }
-
+      //Create a new task
       const newTask: ITask = {
         id: action.payload.id,
         parentId: action.payload.parentId,
@@ -79,11 +80,13 @@ export const taskSlice = createSlice({
         taskIds = [newTask.id];
       }
       //Update local storage
+      //In real app task will be updated in database by consuming API
       localStorage.setItem("taskIds", JSON.stringify(taskIds));
       localStorage.setItem(newTask.id, JSON.stringify(newTask));
       toast.success("Task have been added successfully");
     },
     setTaskDetail: (state, action) => {
+      //Get task detail by ID from Global State
       const taskDetail = state.tasksList.find((x) => x.id == action.payload);
       if (taskDetail !== undefined) {
         state.taskDetail = taskDetail;
@@ -94,8 +97,7 @@ export const taskSlice = createSlice({
       state.taskDetailLoaded = true;
     },
     deleteTask: (state, action) => {
-      //If task have subtasks 
-      //Take all task where taskId or taskParentId is equal to payload      
+      //If task to be deleted has subtasks, take all the tasks where taskId or taskParentId is equal to payload to be deleted
 
       const deletableTasks = state.tasksList.filter(
         (x) => x.id === action.payload || x.parentId === action.payload
@@ -153,28 +155,26 @@ export const taskSlice = createSlice({
 
     setAddTaskNote: (state, action) => {
       const taskId = state.taskDetail?.id;
-      if(taskId) {
+      if (taskId) {
         const newNote: INote = {
           id: action.payload.id,
           detail: action.payload.note,
           date: new Date(),
         };
         const taskIndex = state.tasksList.findIndex((x) => x.id == taskId);
-  
+
         if (taskIndex < 0 || taskIndex === undefined) return;
         if (taskIndex >= 0) {
           const updatedTask = state.tasksList[taskIndex];
-  
+
           updatedTask.notes.push(newNote);
           state.tasksList[taskIndex] = updatedTask;
           state.taskDetail = updatedTask;
-  
+
           localStorage.setItem(taskId, JSON.stringify(updatedTask));
         }
         toast.success("Task notes added");
       }
-      
-
     },
     deleteTaskNote: (state, action) => {
       const taskIndex = state.tasksList.findIndex(
@@ -229,7 +229,6 @@ export const taskSlice = createSlice({
       toast.success("Task note have been updated successfully");
 
       state.taskStatus = idle;
-
     },
     setDoneTask: (state, action) => {
       const taskIndex = state.tasksList.findIndex(
@@ -247,7 +246,9 @@ export const taskSlice = createSlice({
         state.tasksList[taskIndex] = updatedTask;
         state.taskDetail = updatedTask;
         localStorage.setItem(action.payload.id, JSON.stringify(updatedTask));
-        toast.success(`Task marked as ${updatedTask.done ? 'completed' : 'incomplete'}`);
+        toast.success(
+          `Task marked as ${updatedTask.done ? "completed" : "incomplete"}`
+        );
       }
       state.taskStatus = idle;
     },
