@@ -87,7 +87,9 @@ export const taskSlice = createSlice({
     },
     setTaskDetail: (state, action) => {
       //Get task detail by ID from Global State
-      const taskDetail = state.tasksList.find((x) => x.id == action.payload);
+      const taskDetail = state.tasksList.find(
+        (x: ITask) => x.id == action.payload
+      );
       if (taskDetail !== undefined) {
         state.taskDetail = taskDetail;
       } else {
@@ -100,12 +102,12 @@ export const taskSlice = createSlice({
       //If task to be deleted has subtasks, take all the tasks where taskId or taskParentId is equal to payload to be deleted
 
       const deletableTasks = state.tasksList.filter(
-        (x) => x.id === action.payload || x.parentId === action.payload
+        (x: ITask) => x.id === action.payload || x.parentId === action.payload
       );
 
       for (const deletableTask of deletableTasks) {
         let taskIndex = state.tasksList.findIndex(
-          (x) => x.id === deletableTask.id
+          (x: ITask) => x.id === deletableTask.id
         );
         if (taskIndex !== undefined && taskIndex >= 0) {
           state.tasksList.splice(taskIndex, 1);
@@ -122,7 +124,7 @@ export const taskSlice = createSlice({
       state.taskStatus = idle;
 
       //check parent task has been deleted then redirect the user to home page
-      if (deletableTasks.some((x) => x.id === action.payload))
+      if (deletableTasks.some((x: ITask) => x.id === action.payload))
         router.navigate("/");
       toast.success("Task have been deleted successfully");
     },
@@ -158,7 +160,7 @@ export const taskSlice = createSlice({
       if (taskId) {
         const newNote: INote = {
           id: action.payload.id,
-          detail: action.payload.note,
+          detail: action.payload.detail,
           date: new Date(),
         };
         const taskIndex = state.tasksList.findIndex((x) => x.id == taskId);
