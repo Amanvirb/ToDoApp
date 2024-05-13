@@ -144,7 +144,7 @@ export const taskSlice = createSlice({
         };
 
         state.tasksList[taskIndex] = updatedTask;
-
+        state.taskDetail = updatedTask;
         localStorage.setItem(action.payload.id, JSON.stringify(updatedTask));
       }
       state.taskStatus = idle;
